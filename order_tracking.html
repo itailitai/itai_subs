@@ -348,6 +348,62 @@
             color: white;
             text-align: center;
         }
+
+        .loader_overlay {
+            background: white;
+            width: 100%;
+            left: 0;
+            /* height: 70%; */
+            text-align: center;
+        }
+
+        #others{
+            opacity: 0;
+            transition: .5s ease all;
+        }
+
+        /*LOADER*/
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #673ab7;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #673ab7 transparent transparent transparent;
+        }
+
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -357,7 +413,17 @@
     <div class="container">
         <div class="category">סטטוס הזמנה:</div>
         <div class="style_options">
+
             <div id='order_status' class="option_box">
+                <div class="loader_overlay">
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+               <div id='others'>
                 <div class="option_header">
                     הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>
                 </div>
@@ -371,6 +437,7 @@
                         <li>ההזמנה הושלמה</li>
                     </ul>
                 </div>
+               </div>
 
             </div>
         </div>
@@ -391,13 +458,15 @@
                 .then((json) => {
                     jsonData = json;
                     console.log(jsonData);
-                    return jsonData; 
+                    return jsonData;
                 });
-            
+
         }
 
         document.body.onload = async function () {
             const jsonData = await getJSON();
+            document.querySelector(".loader_overlay").style.display='none';
+            document.getElementById("others").style.opacity='1';    
             var searchParams = new URLSearchParams(window.location.search);
             const ordernum = searchParams.get("order");
             console.log(ordernum);
