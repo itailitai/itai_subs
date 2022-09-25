@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrew.css);
+        @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrewcondensed.css);
+
+        body {
+            height: auto;
+            background: rgb(139, 44, 226);
+            background: linear-gradient(330deg, rgba(139, 44, 226, 1) 0%, rgba(79, 3, 225, 1) 100%);
+            color: white;
+            display: flex;
+            direction: rtl;
+            flex-flow: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+            font-family: 'Open Sans Hebrew', serif;
+        }
+
+        h2,
+        h1,
+        h3 {
+            text-shadow: 1px 2px rgb(0 0 0 / 30%);
+        }
+
+        .container {
+            width: 60%;
+        }
+
+        .category {
+            font-size: 1.5em;
+            background: white;
+            display: inline-flex;
+            color: #5004e2;
+            /* font-weight: bold; */
+            padding: 2px 5px 2px 20px;
+            margin-bottom: 5px;
+        }
+
+        .style_options {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: wrap;
+        }
+
+        .option_box {
+            width: calc(50% - 15px);
+            height: 210px;
+            background: white;
+            padding: 5px;
+            box-shadow: 1px 5px 7px rgb(0 0 0 / 20%);
+            transition: .25s ease all;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .option_box .img {
+            width: 100%;
+            height: 85%;
+            filter: grayscale(1);
+            transition: .25s ease all;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .option_header {
+            font-size: 1.5em;
+            color: #9e28ad;
+            transition: .25s ease all;
+        }
+
+        .option_box:hover {
+            background: #241146;
+        }
+
+        .option_box:hover .option_header {
+            color: #fff;
+        }
+
+        .option_box.active .img {
+            filter: grayscale(0);
+        }
+
+        .option_box.active {
+            background: #f44336;
+        }
+
+        .option_box.active .option_header {
+            color: #fff;
+        }
+
+        .option_box.active .img {
+            filter: grayscale(0);
+        }
+
+        .template {
+            background-image: url(template.jpg);
+            width: 60%;
+            height: 250px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            box-shadow: 1px 5px 7px rgb(0 0 0 / 20%);
+            display: flex;
+            flex-flow: wrap;
+        }
+
+        .placement {
+            background: rgba(0, 0, 0, 0.7);
+            height: calc(100% / 3);
+            width: calc(100% / 3);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: .25s ease all;
+            cursor: pointer;
+        }
+
+        .placement.active {
+
+            color: #f44336;
+        }
+
+        .placement:hover,
+        .placement.active {
+            opacity: 1;
+        }
+
+        /* Button style */
+        .cta {
+            position: relative;
+            margin: auto;
+            padding: 12px 18px;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .cta:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: block;
+            border-radius: 50px;
+            background: #ff0057;
+            width: 45px;
+            height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .cta span {
+            position: relative;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .cta svg {
+            position: relative;
+            top: 0;
+            margin-left: 10px;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke: #fff;
+            stroke-width: 2;
+            transform: translateX(0);
+
+            transition: all 0.3s ease;
+        }
+
+        .cta:hover:before {
+            width: 100%;
+            background: #ff0057;
+            box-shadow: 17px 6px 0px 2px rgb(118 44 192);
+
+        }
+
+        .cta:hover svg {
+            transform: translateX(-5px);
+
+        }
+
+        .cta:active {
+            transform: scale(0.95);
+        }
+
+        .copied_to_clipboard {
+            background: #66dd6b;
+            position: fixed;
+            bottom: 40px;
+            color: #1e4e20;
+            padding: 10px;
+            border-radius: 5px;
+
+            width: 330px;
+            left: -400px;
+
+        }
+
+        .errormsg {
+            text-align: center;
+            background: #f44336;
+            display: flex;
+            width: 30%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 3px;
+            border-radius: 3px;
+            color: white;
+            opacity: 0;
+        }
+
+        /* Error animation code */
+        @keyframes error_animation {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Copy animation code */
+        @keyframes copied_animation {
+            0% {
+                left: -400px;
+            }
+
+            2% {
+                box-shadow: unset;
+            }
+
+            5% {
+                left: 20px;
+
+            }
+
+            10% {
+                box-shadow: 0 0 19px 5px #4caf50;
+            }
+
+            95% {
+                left: 20px;
+                box-shadow: 0 0 19px 5px #4caf50;
+
+            }
+
+            100% {
+                left: -400px;
+                box-shadow: unset;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h3>כתוביות - itai_l</h3>
+    <h1 style="margin-top:0;">בחירת עיצוב כתוביות</h1>
+    <h2 style="text-shadow:unset;margin:0;">אנא בחרו את העיצוב ואת המיקום הרצוי</h2>
+    <div class="container">
+        <div class="category">עיצובים:</div>
+        <div class="style_options">
+            <div id='basic' class="option_box">
+                <div class="option_header">
+                    בסיסי
+                </div>
+                <div class="img" style="background-image: url(options/default.png);" alt="default"></div>
+            </div>
+            <div id='basic_2' class="option_box">
+                <div class="option_header">
+                    בסיסי - 2
+                </div>
+                <div class="img" style="background-image: url('options/default - almoni.png');" alt="default"></div>
+            </div>
+            <div id='netflix' class="option_box">
+                <div class="option_header">
+                    נטפליקס
+                </div>
+                <div class="img" style="background-image: url('options/netflix.png');" alt="default"></div>
+            </div>
+            <div id='netflix_alt' class="option_box">
+                <div class="option_header">
+                    נטפליקס - וריאציה
+                </div>
+                <div class="img" style="background-image: url('options/netflix\ -\ almoni.png');" alt="default"></div>
+            </div>
+            <div id='black_background' class="option_box">
+                <div class="option_header">
+                    רקע שחור
+                </div>
+                <div class="img" style="background-image: url('options/background.png');" alt="default"></div>
+            </div>
+            <div id='trans_background' class="option_box">
+                <div class="option_header">
+                    רקע חצי שקוף
+                </div>
+                <div class="img" style="background-image: url('options/transparant.png');" alt="default"></div>
+            </div>
+        </div>
+        <div class="category">מיקום:</div>
+        <h3 style="text-shadow:unset;margin:0;text-align: center;font-weight: normal;margin-bottom: 5px;">סמנו על גבי
+            התמונה את המיקום בו תרצו שיופיעו הכתוביות</h3>
+        <div style="display: flex;justify-content: center;">
+            <div class="template">
+                <div id='top-right' class="placement">ימין עליון</div>
+                <div id='top-center' class="placement">מרכז עליון</div>
+                <div id='top-left' class="placement">שמאל עליון</div>
+                <div id='middle-right' class="placement">ימין אמצע</div>
+                <div id='middle-center' class="placement">מרכז אמצע</div>
+                <div id='middle-left' class="placement">שמאל אמצע</div>
+                <div id='bottom-right' class="placement">ימין תחתון</div>
+                <div id='bottom-center' class="placement">מרכז תחתון</div>
+                <div id='bottom-left' class="placement">שמאל תחתון</div>
+            </div>
+        </div>
+        <button class="cta" id='submit'>
+            <span>לחץ לסיום</span>
+            <svg viewBox="0 0 13 10" height="10px" width="15px">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9" transform="scale (-1, 1)" transform-origin="center"></polyline>
+            </svg>
+        </button>
+        <div class="errormsg">שגיאה</div>
+        <div class='copied_to_clipboard'>הועתק ללוח, אנא שלח את הקישור בהודעה ב-fiverr</div>
+    </div>
+    <script>
+        const remove_active_style = (class_name) => {
+            const active_el = document.querySelector('.' + class_name + '.active');
+            if (active_el) {
+                active_el.classList.remove("active");
+            }
+        };
+        const set_active_style = (el, class_name) => {
+            remove_active_style(class_name);
+            el.classList.add('active');
+            change_url();
+        };
+
+        const change_url = () => {
+            // const data = '?style='+document.querySelector('.option_box.active').id+'&place='+document.querySelector('.placement.active').id;
+            var searchParams = new URLSearchParams(window.location.search);
+            if (document.querySelector('.option_box.active'))
+                searchParams.set("style", document.querySelector('.option_box.active').id);
+            if (document.querySelector('.placement.active')) {
+                searchParams.set("place", document.querySelector('.placement.active').id);
+            }
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            history.replaceState(null, '', newRelativePathQuery);
+
+        };
+
+        const copy_link = () => {
+            if (document.querySelectorAll(".active").length != 2) {
+                show_error("יש לבחור עיצוב ומיקום לכתוביות");
+                return;
+            }
+
+            if (document.querySelector('.copied_to_clipboard').style.animation.includes('copied_animation'))
+                return;
+            let url = document.location.href
+            navigator.clipboard.writeText(url).then(function () {
+                document.querySelector('.copied_to_clipboard').style.animation = 'copied_animation 8s';
+                setTimeout(() => {
+                    document.querySelector('.copied_to_clipboard').style.animation = '';
+                }, 8000);
+            }, function () {
+                alert('חלה שגיאה');
+            });
+
+        }
+
+        const show_error = (msg) => {
+            if (document.querySelector('.errormsg').style.animation.includes('error_animation'))
+                return;
+            document.querySelector('.errormsg').innerHTML = "שגיאה: " + msg;
+            document.querySelector('.errormsg').style.animation = 'error_animation 5s';
+            setTimeout(() => {
+                document.querySelector('.errormsg').style.animation = '';
+            }, 5000);
+        };
+
+
+
+        // event listener for option boxes click
+        document.querySelectorAll('.option_box').forEach(el => el.addEventListener('click', event => {
+            set_active_style(el, 'option_box');
+        }));
+        // event listener for placement divs click
+        document.querySelectorAll('.placement').forEach(el => el.addEventListener('click', event => {
+            set_active_style(el, 'placement');
+        }));
+
+        document.querySelector('.cta').addEventListener('click', copy_link)
+
+       
+
+       
+    </script>
+</body>
+
+</html>
