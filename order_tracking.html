@@ -386,17 +386,18 @@
 
         async function getJSON() {
             let jsonData;
-            fetch('orders.json')
+            return fetch('orders.json')
                 .then((response) => response.json())
                 .then((json) => {
                     jsonData = json;
                     console.log(jsonData);
+                    return jsonData; 
                 });
-            return jsonData;
+            
         }
 
-        document.body.onload = function () {
-            const jsonData = await this.getJSON();
+        document.body.onload = async function () {
+            const jsonData = await getJSON();
             var searchParams = new URLSearchParams(window.location.search);
             const ordernum = searchParams.get("order");
             console.log(ordernum);
