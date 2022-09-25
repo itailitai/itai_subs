@@ -9,9 +9,13 @@
     <style>
         @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrew.css);
         @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrewcondensed.css);
-        html{
+
+        html {
             height: 100%;
+            width: 100%;
+            overflow-x: hidden;
         }
+
         body {
             height: auto;
             background: rgb(139, 44, 226);
@@ -293,14 +297,14 @@
             list-style-type: none;
             color: #673ab7;
             text-transform: uppercase;
-            font-size: 14px; 
+            font-size: 14px;
             width: 25%;
             float: right;
             position: relative;
             text-align: center;
         }
 
-        li.active{
+        li.active {
             color: #27AE60 !important;
         }
 
@@ -357,8 +361,8 @@
                 <div class="option_header">
                     הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>
                 </div>
-                <p id="uname"style="color:#212121; margin:0;"></p>
-                <p id='description' style="color:#212121;margin:0;"></p>    
+                <p id="uname" style="color:#212121; margin:0;"></p>
+                <p id='description' style="color:#212121;margin:0;"></p>
                 <div class="status_timeline">
                     <ul id="progressbar">
                         <li>ההזמנה התקבלה</li>
@@ -367,7 +371,7 @@
                         <li>ההזמנה הושלמה</li>
                     </ul>
                 </div>
-                              
+
             </div>
         </div>
         <h4 style="margin-right: 20px;margin-bottom:0;">מקרא:</h4>
@@ -376,40 +380,37 @@
             <li>בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות</li>
             <li>קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות</li>
             <li>הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם</li>
-          </ul>
+        </ul>
     </div>
     <script>
 
-        let jsonData = {
-            "FO318D0B39A07": {
-                "description": "14 דקות",
-                "uname": "firstprospect",
-                "status": 1
-            }
-        };
 
-             fetch('orders.json')
-        .then((response) => response.json())
-        .then((json) => jsonData=json);
 
         document.body.onload = function () {
+            let jsonData;
+            fetch('orders.json')
+                .then((response) => response.json())
+                .then((json) => {
+                    jsonData = json;
+                    console.log(jsonData);
+                });
             var searchParams = new URLSearchParams(window.location.search);
             const ordernum = searchParams.get("order");
             console.log(ordernum);
             const order_object = jsonData[ordernum];
             console.log(order_object);
             if (!order_object) {
-                document.querySelector(".option_header").innerHTML='<font style="color: white; background: #f44336; padding: 5px; border-radius: 3px; font-size: 18px;">ההזמנה לא קיימת!</font>';
+                document.querySelector(".option_header").innerHTML = '<font style="color: white; background: #f44336; padding: 5px; border-radius: 3px; font-size: 18px;">ההזמנה לא קיימת!</font>';
                 return;
             }
             // set active
             for (let index = 1; index <= jsonData[ordernum].status; index++) {
-                document.querySelectorAll("li")[index-1].classList.add("active");
-                
+                document.querySelectorAll("li")[index - 1].classList.add("active");
+
             }
             document.querySelector("#ordernum").innerHTML = ordernum + "#";
-            document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> "+jsonData[ordernum].uname;
-            document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> "+jsonData[ordernum].description;
+            document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
+            document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
             //     Object.keys(jsonData).forEach(function (key) {
             //     console.log("key: "+key+",value: "+jsonData[key].description)
             // });
