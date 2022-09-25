@@ -453,7 +453,7 @@
 
         async function getJSON() {
             let jsonData;
-            return fetch('orders.json')
+            return fetch('orders.json',{cache: "no-cache"})
                 .then((response) => response.json())
                 .then((json) => {
                     jsonData = json;
