@@ -366,6 +366,20 @@
             change_url();
         };
 
+        const load_from_url_query = () =>{
+            var searchParams = new URLSearchParams(window.location.search);
+            const style = searchParams.get("style");
+            const place = searchParams.get("place");
+            if(style){
+                var el = document.querySelector("#"+style);
+                set_active_style(el, 'option_box');
+            }
+            if(place){
+                var el = document.querySelector("#"+place);
+                set_active_style(el, 'placement');
+            }
+        }
+
         const change_url = () => {
             // const data = '?style='+document.querySelector('.option_box.active').id+'&place='+document.querySelector('.placement.active').id;
             var searchParams = new URLSearchParams(window.location.search);
@@ -421,7 +435,7 @@
         }));
 
         document.querySelector('.cta').addEventListener('click', copy_link)
-
+        load_from_url_query();
        
 
        
