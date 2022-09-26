@@ -284,7 +284,9 @@
         }
 
         @media only screen and (max-width: 500px) {
-            .container, .template {
+
+            .container,
+            .template {
                 width: 90%;
             }
 
@@ -292,6 +294,102 @@
                 width: 100%;
                 height: 210px;
             }
+        }
+
+        .price {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            background: #3f51b5;
+            padding: 20px;
+        }
+
+        #length {
+            outline: none !important;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            display: flex;
+            margin: 0 auto;
+            color: #4a238f;
+        }
+
+
+        /* PAYMENT RADIO CSS */
+        .cc-selector-2 input {
+            position: absolute;
+            z-index: 999;
+        }
+
+        .fiverr {
+            background-image: url(imgs/fiverr.png);
+        }
+
+        .bit {
+            background-image: url(imgs/bit.png);
+        }
+
+        .paypal {
+            background-image: url(imgs/paypal.png);
+        }
+
+        .cc-selector-2 input:active+.drinkcard-cc,
+        .cc-selector input:active+.drinkcard-cc {
+            opacity: .9;
+        }
+
+        .cc-selector-2 input:checked+.drinkcard-cc,
+        .cc-selector input:checked+.drinkcard-cc {
+            -webkit-filter: none;
+            -moz-filter: none;
+            filter: none;
+        }
+
+        .drinkcard-cc {
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+            width: 100px;
+            height: 70px;
+            -webkit-transition: all 100ms ease-in;
+            -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+            -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+            -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+            filter: brightness(1.8) grayscale(1) opacity(.7);
+        }
+
+        .drinkcard-cc:hover {
+            -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
+        }
+
+        #bitmail {
+            color: white;
+            text-decoration: none;
+            background: #009688;
+            padding: 5px;
+            border-radius: 5px;
+            transition: .25s ease all;
+        }
+
+        #bitmail:hover {
+            background: #158278;
+        }
+
+        #paypal-button {
+            background: rgb(229 214 255);
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            display: flex;
+            flex-flow: column;
+            color: #250d50;
         }
     </style>
 </head>
@@ -356,6 +454,23 @@
                 <div id='bottom-left' class="placement">שמאל תחתון</div>
             </div>
         </div>
+
+        <div class="category">אורך:</div>
+        <h3
+            style="text-shadow:unset;margin:0;text-align: center;font-weight: normal;margin-bottom: 5px;direction: ltr;">
+            (אורך הסרטון בדקות (מעוגל כלפי מעלה</h3>
+        <input oninput="update_estimated_price()" id='length' type="number" min="1" max="15" value='1'>
+        <div class="category">אמצעי תשלום:</div>
+        <div class="cc-selector-2">
+            <input onclick="update_estimated_price()" checked="checked" id="fiverr" type="radio" name="payment"
+                value="fiverr" />
+            <label class="drinkcard-cc fiverr" for="fiverr"></label>
+            <input onclick="update_estimated_price()" id="bit" type="radio" name="payment" value="bit" />
+            <label class="drinkcard-cc bit" for="bit"></label>
+            <input onclick="update_estimated_price()" id="paypal_payment" type="radio" name="payment" value="paypal" />
+            <label class="drinkcard-cc paypal" for="paypal_payment"></label>
+        </div>
+        <a id='bitmail' href="" target="_blank">לחץ כאן לשליחת פרטי התשלום</a>
         <button class="cta" id='submit'>
             <span>לחץ לסיום</span>
             <svg viewBox="0 0 13 10" height="10px" width="15px">
@@ -364,9 +479,73 @@
             </svg>
         </button>
         <div class="errormsg">שגיאה</div>
+        <div id="paypal-button">
+            <h4>יש לבצע תשלום רק לאחר וידוא מולי ב-fiverr!</h4>
+        </div>
+        <div class="price"></div>
         <div class='copied_to_clipboard'>הועתק ללוח, אנא שלח את הקישור בהודעה ב-fiverr</div>
     </div>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYLgOgqDXClT4H54VqMoLmIgOU0N55NQRr9kmdsHqveM8oVobgRQYGN_wrRkBiiUVwq89EhAWA_2X5ib"></script>
     <script>
+        var price;
+        var url;
+        const create_paypal_button = () => {
+
+            paypal.Buttons({
+
+                env: 'production', // Optional: specify 'sandbox' environment
+
+                client: {
+                    sandbox: 'AUOglIJzSHgK52GmbAKFgcQNQvIAUI6k4uXme8WAJh3Z7GTo-WHivTExUoSFEPQ6kIrV7OBwUT9znEa0',
+                    production: 'AYLgOgqDXClT4H54VqMoLmIgOU0N55NQRr9kmdsHqveM8oVobgRQYGN_wrRkBiiUVwq89EhAWA_2X5ib'
+                },
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                description: "Subtitling Serice",
+                                amount: {
+                                    currency_code: "USD",
+                                    value: price,
+                                    breakdown: {
+                                        item_total: {
+                                            currency_code: "USD",
+                                            value: price
+                                        }
+                                    }
+                                },
+                                items: [
+                                    {
+                                        name: "Subtitles",
+                                        description: url,
+                                        unit_amount: {
+                                            currency_code: "USD",
+                                            value: price
+                                        },
+                                        quantity: "1"
+                                    }
+                                ],
+
+                            }
+                        ]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        console.log(details);
+                        document.querySelector('.copied_to_clipboard').innerHTML = "התשלום בוצע בהצלחה, ההזמנה תחל לאחר אימות התשלום.<br>יש לשלוח הודעת עדכון ב-fiverr."
+                        document.querySelector('.copied_to_clipboard').style.animation = 'copied_animation 15s';
+
+                    });
+                },
+                onError: function (err) {
+                    // For example, redirect to a specific error page
+                    show_error("חלה שגיאה בעת התשלום, נא צור קשר.");
+                }
+            }).render('#paypal-button');
+        }
+
         const remove_active_style = (class_name) => {
             const active_el = document.querySelector('.' + class_name + '.active');
             if (active_el) {
@@ -377,12 +556,40 @@
             remove_active_style(class_name);
             el.classList.add('active');
             change_url();
+            update_estimated_price();
         };
+
+
+        const update_estimated_price = () => {
+            const payment_method = document.querySelector('input[name="payment"]:checked').value;
+            var minutes = document.querySelector("#length").value;
+            var html;
+            if (minutes <= 4)
+                price = 10;
+            else if (minutes <= 9)
+                price = 15
+            else
+                price = 20
+            if (payment_method == "fiverr") {
+                console.log('mmm')
+                html = "<b>הערכת מחיר:</b><br>מחיר בסיס: " + price.toString() + "$<br>" + "עמלת פייבר: " + (price * 1.2 - price).toString() + "$<br>" + '<font style="color:#b0f6ff"> סה"כ: ' + (price * 1.2).toString() + "$</font>";
+                price *= 1.2;
+            }
+            else {
+                html = "<b>הערכת מחיר: </b>" + "$" + price;
+            }
+
+            document.querySelector(".price").innerHTML = html;
+
+            change_url();
+        }
 
         const load_from_url_query = () => {
             var searchParams = new URLSearchParams(window.location.search);
             const style = searchParams.get("style");
             const place = searchParams.get("place");
+            const payment = searchParams.get("payment");
+            const length = searchParams.get("length") ? searchParams.get("length") : 1;
             if (style) {
                 var el = document.querySelector("#" + style);
                 set_active_style(el, 'option_box');
@@ -391,6 +598,15 @@
                 var el = document.querySelector("#" + place);
                 set_active_style(el, 'placement');
             }
+            if (payment) {
+                if (payment == "paypal")
+                    document.querySelector("#paypal_payment").checked = true;
+                else
+                    document.querySelector("#" + payment).checked = true;
+            }
+
+            document.querySelector('input[type="number"]').value = length;
+            update_estimated_price();
         }
 
         const change_url = () => {
@@ -401,7 +617,46 @@
             if (document.querySelector('.placement.active')) {
                 searchParams.set("place", document.querySelector('.placement.active').id);
             }
+            if (document.querySelector('input[name="payment"]:checked')) {
+                searchParams.set("payment", document.querySelector('input[name="payment"]:checked').value);
+                if (document.querySelector('input[name="payment"]:checked').id == 'fiverr')
+                    document.querySelector("#submit").style.opacity = 1;
+                else
+                    document.querySelector("#submit").style.opacity = 0;
+
+                if (document.querySelector('input[name="payment"]:checked').id == 'paypal_payment') {
+                    if (document.querySelectorAll(".active").length != 2) {
+                        show_error("יש לבחור עיצוב ומיקום לכתוביות");
+                        return;
+                    }
+                    document.querySelector("#paypal-button").style.display = 'flex';
+                }
+                else
+                    document.querySelector("#paypal-button").style.display = 'none';
+                if (document.querySelector('input[name="payment"]:checked').id == 'bit') {
+                    if (document.querySelectorAll(".active").length != 2) {
+                        show_error("יש לבחור עיצוב ומיקום לכתוביות");
+                        return;
+                    }
+                    if (document.querySelector('input[name="payment"]:checked').id == 'bit') {
+                        var message = "https://mail.google.com/mail/?view=cm&fs=1&to=itailaitner12345@gmail.com&su=" + encodeURIComponent("תשלום באמצעות ביט - כתוביות") + "&body=";
+                        message += encodeURIComponent("שם משתמש בפייבר: \n מספר טלפון לגביית תשלום בביט: \n\n --------------------אין לערוך את השורה מתחת ---------------------- \n קישור:") + encodeURIComponent(document.location.href)
+                    }
+                    // else {
+                    //     var message = "https://mail.google.com/mail/?view=cm&fs=1&to=itailaitner12345@gmail.com&su=" + encodeURIComponent("תשלום באמצעות PayPal - כתוביות") + "&body=";
+                    //     message += encodeURI("שם משתמש בפייבר: \n חשבון מייל של Paypal: \n\n ---------אין לערוך את השורה מתחת ---------------------- \n קישור:") + encodeURIComponent(document.location.href)
+
+                    // }
+                    document.querySelector("#bitmail").href = message;
+                    document.querySelector("#bitmail").style.opacity = 1;
+                }
+                else
+                    document.querySelector("#bitmail").style.opacity = 0;
+            }
+
+            searchParams.set("length", document.querySelector('input[type="number"]').value);
             var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            url = newRelativePathQuery;
             history.replaceState(null, '', newRelativePathQuery);
 
         };
@@ -449,6 +704,13 @@
 
         document.querySelector('.cta').addEventListener('click', copy_link)
         load_from_url_query();
+        document.addEventListener('DOMContentLoaded', function () {
+            create_paypal_button();
+            // var message = "שם משתמש בפייבר: \n חשבון מייל של Paypal: \n\n ---------אין לערוך את השורה מתחת ---------------------- \n קישור:" + document.location.href
+
+            // document.querySelector("#bitmail").href += encodeURIComponent(message);
+        }, false);
+
 
 
 
