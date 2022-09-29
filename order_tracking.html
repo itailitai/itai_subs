@@ -524,13 +524,13 @@
                 document.body.style.direction = 'ltr';
                 document.querySelector("#uname").innerHTML = "<b>Username:</b> " + jsonData[ordernum].uname;
                 document.querySelector("#description").innerHTML = "<b>Order description:</b> " + jsonData[ordernum].description;
-                document.querySelectorAll("#progressbar").classList.toggle("english")
+                document.querySelector("#progressbar").classList.toggle("english")
             }
             else {
                 document.body.style.direction = 'rtl'
                 document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
                 document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
-                document.querySelectorAll("#progressbar").classList.toggle("english")
+                document.querySelector("#progressbar").classList.toggle("english")
             }
 
         })
