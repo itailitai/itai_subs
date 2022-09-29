@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מצב הזמנה - כתוביות</title>
+    <link rel="stylesheet" href="style/I18NSwitch.css" />
+    <script src="script/I18NSwitch.js"></script>
     <style>
         @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrew.css);
         @import url(https://fonts.googleapis.com/earlyaccess/opensanshebrewcondensed.css);
@@ -357,7 +359,7 @@
             text-align: center;
         }
 
-        #others{
+        #others {
             opacity: 0;
             transition: .5s ease all;
         }
@@ -414,10 +416,11 @@
 </head>
 
 <body>
-    <h3>כתוביות - itai_l</h3>
-    <h1 style="margin-top:0;">בדיקת סטטוס הזמנה</h1>
+    <div id="i18n-switch"></div>
+    <h3 data-i18n="h3_title">כתוביות - itai_l</h3>
+    <h1 data-i18n="h1_title" style="margin-top:0;">בדיקת סטטוס הזמנה</h1>
     <div class="container">
-        <div class="category">סטטוס הזמנה:</div>
+        <div class="category" data-i18n="order_status">סטטוס הזמנה:</div>
         <div class="style_options">
 
             <div id='order_status' class="option_box">
@@ -429,37 +432,95 @@
                         <div></div>
                     </div>
                 </div>
-               <div id='others'>
-                <div class="option_header">
-                    הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>
+                <div id='others'>
+                    <div class="option_header" data-i18n="order_num">
+                        הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>
+                    </div>
+                    <p id="uname" style="color:#212121; margin:0;"></p>
+                    <p id='description' style="color:#212121;margin:0;"></p>
+                    <div class="status_timeline">
+                        <ul id="progressbar">
+                            <li data-i18n="stage1">ההזמנה התקבלה</li>
+                            <li data-i18n="stage2">בתהליך כתוביות</li>
+                            <li data-i18n="stage3">קידוד ופינישים</li>
+                            <li data-i18n="stage4">ההזמנה הושלמה</li>
+                        </ul>
+                    </div>
                 </div>
-                <p id="uname" style="color:#212121; margin:0;"></p>
-                <p id='description' style="color:#212121;margin:0;"></p>
-                <div class="status_timeline">
-                    <ul id="progressbar">
-                        <li>ההזמנה התקבלה</li>
-                        <li>בתהליך כתוביות</li>
-                        <li>קידוד ופינישים</li>
-                        <li>ההזמנה הושלמה</li>
-                    </ul>
-                </div>
-               </div>
 
             </div>
         </div>
-        <h4 style="margin-right: 20px;margin-bottom:0;">מקרא:</h4>
+        <h4 data-i18n="legend" style="margin-right: 20px;margin-bottom:0;">מקרא:</h4>
         <ul>
-            <li>ההזמנה התקבלה - קיבלתי את ההזמנה אך העבודה עליה עוד לא החלה</li>
-            <li>בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות</li>
-            <li>קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות</li>
-            <li>הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם</li>
+            <li data-i18n="legend1">ההזמנה התקבלה - קיבלתי את ההזמנה אך העבודה עליה עוד לא החלה</li>
+            <li data-i18n="legend2">בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות</li>
+            <li data-i18n="legend3">קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות</li>
+            <li data-i18n="legend4">הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם</li>
         </ul>
     </div>
     <script>
+    
+        const english = {
+            "h3_title": "itai_l - Subtitles",
+            "h1_title":"Order Tracking",
+            "order_status":"Order status:",
+            "order_num":"Order num: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
+            "stage1":"Order accepted",
+            "stage2":"Subtitling proccess",
+            "stage3":"Editing and encoding",
+            "stage4":"Order completed",
+            "legend":"Legend:",
+            "legend1":"Order accepted - Order received but work has not started",
+            "legend2":"Subtitling proccess - the order is in the process of creating subtitles",
+            "legend3":"Editing and encoding - Burning subtitles onto the video and checking for errors",
+            "legend4":"Order completed - the order files have been sent to you"
+        };
+        const hebrew = {
+            "h3_title": "כתוביות - itai_l",
+            "h1_title":"בדיקת סטטוס הזמנה",
+            "order_status":"סטטוס הזמנה:",
+            "order_num":"הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
+            "stage1":"ההזמנה התקבלה",
+            "stage2":"בתהליך כתוביות",
+            "stage3":"קידוד ופינישים",
+            "stage4":"ההזמנה הושלמה",
+            "legend":"מקרא:",
+            "legend1":"ההזמנה התקבלה - קיבלתי את ההזמנה אך העבודה עליה עוד לא החלה",
+            "legend2":"בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות",
+            "legend3":"קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות",
+            "legend4":"הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם"
+
+        };
+        const general = {};
+
+        const langSwitch = new I18NSwitch(
+      "i18n-switch",
+      {
+        flag: CountryFlags.ISRAEL,
+        language: hebrew
+      },
+      {
+        flag: CountryFlags.UNITED_STATES,
+        language: english
+      },
+      general
+      
+);
+
+document.querySelector("#i18n-switch").addEventListener("click", ()=>{
+    if(langSwitch.on){
+        document.body.style.direction='ltr'
+    }
+    else{
+        document.body.style.direction='rtl'
+    }
+    
+})
+
 
         async function getJSON() {
             let jsonData;
-            return fetch('orders.json',{cache: "no-cache"})
+            return fetch('orders.json', { cache: "no-cache" })
                 .then((response) => response.json())
                 .then((json) => {
                     jsonData = json;
@@ -471,8 +532,8 @@
 
         document.body.onload = async function () {
             const jsonData = await getJSON();
-            document.querySelector(".loader_overlay").style.display='none';
-            document.getElementById("others").style.opacity='1';    
+            document.querySelector(".loader_overlay").style.display = 'none';
+            document.getElementById("others").style.opacity = '1';
             var searchParams = new URLSearchParams(window.location.search);
             const ordernum = searchParams.get("order");
             console.log(ordernum);
