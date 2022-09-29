@@ -492,7 +492,7 @@
 
         };
         const general = {};
-
+        let jsonData;
         const langSwitch = new I18NSwitch(
             "i18n-switch",
             {
@@ -512,10 +512,14 @@
             const ordernum = searchParams.get("order");
             document.querySelector("#ordernum").innerHTML = "#" + ordernum;
             if (langSwitch.on) {
-                document.body.style.direction = 'ltr'
+                document.body.style.direction = 'ltr';
+                document.querySelector("#uname").innerHTML = "<b>Username:</b> " + jsonData[ordernum].uname;
+                document.querySelector("#description").innerHTML = "<b>Order description:</b> " + jsonData[ordernum].description;
             }
             else {
                 document.body.style.direction = 'rtl'
+                document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
+                document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
             }
 
         })
@@ -534,7 +538,7 @@
         }
 
         document.body.onload = async function () {
-            const jsonData = await getJSON();
+            jsonData = await getJSON();
             document.querySelector(".loader_overlay").style.display = 'none';
             document.getElementById("others").style.opacity = '1';
             var searchParams = new URLSearchParams(window.location.search);
@@ -552,15 +556,9 @@
 
             }
             document.querySelector("#ordernum").innerHTML = ordernum + "#";
-            if (langSwitch.on) {
-                document.querySelector("#uname").innerHTML = "<b>Username:</b> " + jsonData[ordernum].uname;
-                document.querySelector("#description").innerHTML = "<b>Order description:</b> " + jsonData[ordernum].description;
-            }
-            else {
-                document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
-                document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
-            }
 
+            document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
+            document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
             //     Object.keys(jsonData).forEach(function (key) {
             //     console.log("key: "+key+",value: "+jsonData[key].description)
             // });
