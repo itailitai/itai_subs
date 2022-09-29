@@ -51,6 +51,10 @@
             margin-bottom: 5px;
         }
 
+        .category-en {
+            padding: 2px 20px 2px 5px;
+        }
+
         .style_options {
             display: flex;
             justify-content: space-between;
@@ -425,7 +429,10 @@
 </head>
 
 <body>
-    <div id="i18n-switch"></div>
+    <div style="display: flex; align-items: center; justify-content: space-around; ">
+        <p data-i18n="switch_lang" style="margin: 5px;">שנה שפה</p>
+        <div id="i18n-switch"></div>
+    </div>
     <h3 data-i18n="h3_title">כתוביות - itai_l</h3>
     <h1 data-i18n="h1_title" style="margin-top:0;">בדיקת סטטוס הזמנה</h1>
     <div class="container">
@@ -470,6 +477,7 @@
     <script>
 
         const english = {
+            "switch_lang": "Switch Language",
             "h3_title": "itai_l - Subtitles",
             "h1_title": "Order Tracking",
             "order_status": "Order status:",
@@ -485,6 +493,7 @@
             "legend4": "Order completed - the order files have been sent to you"
         };
         const hebrew = {
+            "switch_lang": "שנה שפה",
             "h3_title": "כתוביות - itai_l",
             "h1_title": "בדיקת סטטוס הזמנה",
             "order_status": "סטטוס הזמנה:",
@@ -521,12 +530,15 @@
             const ordernum = searchParams.get("order");
             document.querySelector("#ordernum").innerHTML = "#" + ordernum;
             if (langSwitch.on) {
+                document.querySelector(".category").classList.toggle("category-en")
                 document.body.style.direction = 'ltr';
                 document.querySelector("#uname").innerHTML = "<b>Username:</b> " + jsonData[ordernum].uname;
                 document.querySelector("#description").innerHTML = "<b>Order description:</b> " + jsonData[ordernum].description;
                 document.querySelector("#progressbar").classList.toggle("english")
+
             }
             else {
+                document.querySelector(".category").classList.toggle("category-en")
                 document.body.style.direction = 'rtl'
                 document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
                 document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
