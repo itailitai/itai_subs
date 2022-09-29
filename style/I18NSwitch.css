@@ -1,6 +1,6 @@
 :root{
-    --sl-width:40px;
-    --sl-height: 26px;
+    --sl-width:50px;
+    --sl-height: 36px;
     --sl-border-color: gray;
 
     --sl-border-radius: calc(var(--sl-height) / 2);
