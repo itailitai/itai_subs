@@ -459,66 +459,66 @@
         </ul>
     </div>
     <script>
-    
+
         const english = {
             "h3_title": "itai_l - Subtitles",
-            "h1_title":"Order Tracking",
-            "order_status":"Order status:",
-            "order_num":"Order num: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
-            "stage1":"Order accepted",
-            "stage2":"Subtitling proccess",
-            "stage3":"Editing and encoding",
-            "stage4":"Order completed",
-            "legend":"Legend:",
-            "legend1":"Order accepted - Order received but work has not started",
-            "legend2":"Subtitling proccess - the order is in the process of creating subtitles",
-            "legend3":"Editing and encoding - Burning subtitles onto the video and checking for errors",
-            "legend4":"Order completed - the order files have been sent to you"
+            "h1_title": "Order Tracking",
+            "order_status": "Order status:",
+            "order_num": "Order num: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
+            "stage1": "Order accepted",
+            "stage2": "Subtitling proccess",
+            "stage3": "Editing and encoding",
+            "stage4": "Order completed",
+            "legend": "Legend:",
+            "legend1": "Order accepted - Order received but work has not started",
+            "legend2": "Subtitling proccess - the order is in the process of creating subtitles",
+            "legend3": "Editing and encoding - Burning subtitles onto the video and checking for errors",
+            "legend4": "Order completed - the order files have been sent to you"
         };
         const hebrew = {
             "h3_title": "כתוביות - itai_l",
-            "h1_title":"בדיקת סטטוס הזמנה",
-            "order_status":"סטטוס הזמנה:",
-            "order_num":"הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
-            "stage1":"ההזמנה התקבלה",
-            "stage2":"בתהליך כתוביות",
-            "stage3":"קידוד ופינישים",
-            "stage4":"ההזמנה הושלמה",
-            "legend":"מקרא:",
-            "legend1":"ההזמנה התקבלה - קיבלתי את ההזמנה אך העבודה עליה עוד לא החלה",
-            "legend2":"בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות",
-            "legend3":"קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות",
-            "legend4":"הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם"
+            "h1_title": "בדיקת סטטוס הזמנה",
+            "order_status": "סטטוס הזמנה:",
+            "order_num": "הזמנה: <span style='color: #e91e63;font-weight: bold;' id='ordernum'></span>",
+            "stage1": "ההזמנה התקבלה",
+            "stage2": "בתהליך כתוביות",
+            "stage3": "קידוד ופינישים",
+            "stage4": "ההזמנה הושלמה",
+            "legend": "מקרא:",
+            "legend1": "ההזמנה התקבלה - קיבלתי את ההזמנה אך העבודה עליה עוד לא החלה",
+            "legend2": "בתהליך כתוביות - ההזמנה נמצאת בתהליך יצירת הכתוביות",
+            "legend3": "קידוד ופינישים - הדבקת הכתוביות על גבי הסרטון ובדיקת טעויות",
+            "legend4": "הזמנה הושלמה - קבצי ההזמנה נשלחו אליכם"
 
         };
         const general = {};
 
         const langSwitch = new I18NSwitch(
-      "i18n-switch",
-      {
-        flag: CountryFlags.ISRAEL,
-        language: hebrew
-      },
-      {
-        flag: CountryFlags.UNITED_STATES,
-        language: english
-      },
-      general
-      
-);
+            "i18n-switch",
+            {
+                flag: CountryFlags.ISRAEL,
+                language: hebrew
+            },
+            {
+                flag: CountryFlags.UNITED_STATES,
+                language: english
+            },
+            general
 
-document.querySelector("#i18n-switch").addEventListener("click", ()=>{
-    var searchParams = new URLSearchParams(window.location.search);
-    const ordernum = searchParams.get("order");
-    document.querySelector("#ordernum").innerHTML =  "#" + ordernum ;
-    if(langSwitch.on){
-        document.body.style.direction='ltr'
-    }
-    else{
-        document.body.style.direction='rtl'
-    }
-    
-})
+        );
+
+        document.querySelector("#i18n-switch").addEventListener("click", () => {
+            var searchParams = new URLSearchParams(window.location.search);
+            const ordernum = searchParams.get("order");
+            document.querySelector("#ordernum").innerHTML = "#" + ordernum;
+            if (langSwitch.on) {
+                document.body.style.direction = 'ltr'
+            }
+            else {
+                document.body.style.direction = 'rtl'
+            }
+
+        })
 
 
         async function getJSON() {
@@ -552,8 +552,15 @@ document.querySelector("#i18n-switch").addEventListener("click", ()=>{
 
             }
             document.querySelector("#ordernum").innerHTML = ordernum + "#";
-            document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
-            document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
+            if (langSwitch.on) {
+                document.querySelector("#uname").innerHTML = "<b>Username:</b> " + jsonData[ordernum].uname;
+                document.querySelector("#description").innerHTML = "<b>Order description:</b> " + jsonData[ordernum].description;
+            }
+            else {
+                document.querySelector("#uname").innerHTML = "<b>שם המזמין:</b> " + jsonData[ordernum].uname;
+                document.querySelector("#description").innerHTML = "<b>תיאור ההזמנה:</b> " + jsonData[ordernum].description;
+            }
+
             //     Object.keys(jsonData).forEach(function (key) {
             //     console.log("key: "+key+",value: "+jsonData[key].description)
             // });
