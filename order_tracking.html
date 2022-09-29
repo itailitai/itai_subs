@@ -508,6 +508,9 @@
 );
 
 document.querySelector("#i18n-switch").addEventListener("click", ()=>{
+    var searchParams = new URLSearchParams(window.location.search);
+    const ordernum = searchParams.get("order");
+    document.querySelector("#ordernum").innerHTML =  "#" + ordernum ;
     if(langSwitch.on){
         document.body.style.direction='ltr'
     }
