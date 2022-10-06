@@ -12,6 +12,11 @@
     "FO1EEC1CD846":{
 "description":"Hebrew subtitles for a 14 minutes long video",
         "uname":"laurelp11",
+        "status":2
+},
+    "FO71DE7BF6EC5":{
+"description":"Both Hebrew and English, 4 minutes long video",
+        "uname":"raffut",
         "status":1
 }
 }
